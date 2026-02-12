@@ -1,6 +1,6 @@
 {
-  "version": "1.2.2",
-  "updatedAt": "2026-02-12T06:31:24.629Z",
+  "version": "1.2.4",
+  "updatedAt": "2026-02-12T07:25:12.927Z",
   "files": {
     "site/.vitepress/config.ts": "1.1.3",
     "site/.vitepress/reports-index.data.ts": "1.1.0",
@@ -12,7 +12,8 @@
     "site/archive.md": "1.2.0",
     "site/stats.md": "1.2.1",
     "site/latest.md": "1.1.0",
-    "scripts/generate-index.js": "1.2.2",
+    "scripts/generate-index.js": "1.2.4",
+    "scripts/migrate-reports.js": "1.2.3",
     "package.json": "1.1.0",
     ".gitignore": "1.0.0",
     ".github/workflows/deploy-site.yml": "1.1.1",
