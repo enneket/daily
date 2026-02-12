@@ -47,7 +47,7 @@ export default defineConfig({
     },
     
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/你的用户名/daily' }
+      { icon: 'github', link: 'https://github.com/enneket/daily' }
     ],
     
     footer: {
@@ -65,6 +65,7 @@ export default defineConfig({
   },
   
   sitemap: {
-    hostname: 'https://你的用户名.github.io/daily'
+    hostname: 'https://enneket.github.io/daily'
   }
 });
+
