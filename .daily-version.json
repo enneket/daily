@@ -1,6 +1,6 @@
 {
-  "version": "1.1.0",
-  "updatedAt": "2026-02-12T03:51:37.116Z",
+  "version": "1.1.1",
+  "updatedAt": "2026-02-12T05:05:11.326Z",
   "files": {
     "site/.vitepress/config.ts": "1.1.0",
     "site/.vitepress/reports-index.data.ts": "1.1.0",
@@ -15,7 +15,7 @@
     "scripts/generate-index.js": "1.1.0",
     "package.json": "1.1.0",
     ".gitignore": "1.0.0",
-    ".github/workflows/deploy-site.yml": "1.0.0",
+    ".github/workflows/deploy-site.yml": "1.1.1",
     "README.md": "1.0.0"
   }
 }
