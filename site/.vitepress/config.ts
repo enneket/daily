@@ -68,4 +68,3 @@ export default defineConfig({
     hostname: 'https://enneket.github.io/daily'
   }
 });
-
