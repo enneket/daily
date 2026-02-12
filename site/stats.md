@@ -1,107 +1,87 @@
 # 总体统计
 
 <script setup>
-import { data as reports } from './.vitepress/reports-index.data';
 import { data as stats } from './.vitepress/stats.data';
-
-const safeReports = Array.isArray(reports) ? reports : [];
-const safeStats = stats || {
-  total: 0,
-  streak: 0,
-  thisYear: 0,
-  thisMonth: 0,
-  totalWords: 0,
-  avgWords: 0,
-  byMonth: {},
-  byYear: {}
-};
-
-// 将对象转换为数组，避免 v-for 遍历对象的问题
-const yearStatsArray = Object.entries(safeStats.byYear || {})
-  .map(([year, count]) => ({ year, count }))
-  .sort((a, b) => b.year.localeCompare(a.year));
-
-const monthStatsArray = Object.entries(safeStats.byMonth || {})
-  .map(([month, count]) => ({ month, count }))
-  .sort((a, b) => b.month.localeCompare(a.month));
-
-const hasTimeRange = safeStats.firstDate && safeStats.lastDate;
 </script>
 
-<ClientOnly>
 <div class="stats-container">
   <div class="stats-grid">
     <div class="stat-card large">
       <div class="stat-icon">📝</div>
-      <div class="stat-value">{{ safeStats.total }}</div>
+      <div class="stat-value" v-text="stats.total || 0"></div>
       <div class="stat-label">总日报数</div>
     </div>
     
     <div class="stat-card">
-      <div class="stat-value">{{ safeStats.thisYear }}</div>
+      <div class="stat-value" v-text="stats.thisYear || 0"></div>
       <div class="stat-label">今年日报</div>
     </div>
     
     <div class="stat-card">
-      <div class="stat-value">{{ safeStats.thisMonth }}</div>
+      <div class="stat-value" v-text="stats.thisMonth || 0"></div>
       <div class="stat-label">本月日报</div>
     </div>
     
     <div class="stat-card">
-      <div class="stat-value">{{ safeStats.totalWords.toLocaleString() }}</div>
+      <div class="stat-value" v-text="(stats.totalWords || 0).toLocaleString()"></div>
       <div class="stat-label">总字数</div>
     </div>
     
     <div class="stat-card">
-      <div class="stat-value">{{ safeStats.avgWords }}</div>
+      <div class="stat-value" v-text="stats.avgWords || 0"></div>
       <div class="stat-label">平均字数</div>
     </div>
   </div>
 
-  <h2 v-if="hasTimeRange">时间跨度</h2>
-  <div class="time-range" v-if="hasTimeRange">
-    <div class="range-item">
-      <div class="range-label">第一篇</div>
-      <div class="range-value">{{ safeStats.firstDate }}</div>
-    </div>
-    <div class="range-divider">→</div>
-    <div class="range-item">
-      <div class="range-label">最新一篇</div>
-      <div class="range-value">{{ safeStats.lastDate }}</div>
-    </div>
-  </div>
-
-  <h2 v-if="yearStatsArray.length > 0">按年统计</h2>
-  <div class="year-stats" v-if="yearStatsArray.length > 0">
-    <div 
-      v-for="item in yearStatsArray" 
-      :key="item.year"
-      class="year-item"
-    >
-      <div class="year-label">{{ item.year }} 年</div>
-      <div class="year-bar">
-        <div 
-          class="year-bar-fill" 
-          :style="{ width: `${(item.count / safeStats.total * 100)}%` }"
-        ></div>
+  <template v-if="stats.firstDate && stats.lastDate">
+    <h2>时间跨度</h2>
+    <div class="time-range">
+      <div class="range-item">
+        <div class="range-label">第一篇</div>
+        <div class="range-value" v-text="stats.firstDate"></div>
       </div>
-      <div class="year-count">{{ item.count }} 篇</div>
+      <div class="range-divider">→</div>
+      <div class="range-item">
+        <div class="range-label">最新一篇</div>
+        <div class="range-value" v-text="stats.lastDate"></div>
+      </div>
     </div>
-  </div>
+  </template>
 
-  <h2 v-if="monthStatsArray.length > 0">按月统计</h2>
-  <div class="month-stats" v-if="monthStatsArray.length > 0">
-    <div 
-      v-for="item in monthStatsArray" 
-      :key="item.month"
-      class="month-item"
-    >
-      <div class="month-label">{{ item.month }}</div>
-      <div class="month-count">{{ item.count }} 篇</div>
+  <template v-if="stats.byYear && Object.keys(stats.byYear).length > 0">
+    <h2>按年统计</h2>
+    <div class="year-stats">
+      <div 
+        v-for="(count, year) in stats.byYear" 
+        :key="year"
+        class="year-item"
+      >
+        <div class="year-label" v-text="year + ' 年'"></div>
+        <div class="year-bar">
+          <div 
+            class="year-bar-fill" 
+            :style="{ width: ((count / stats.total) * 100) + '%' }"
+          ></div>
+        </div>
+        <div class="year-count" v-text="count + ' 篇'"></div>
+      </div>
     </div>
-  </div>
+  </template>
+
+  <template v-if="stats.byMonth && Object.keys(stats.byMonth).length > 0">
+    <h2>按月统计</h2>
+    <div class="month-stats">
+      <div 
+        v-for="(count, month) in stats.byMonth" 
+        :key="month"
+        class="month-item"
+      >
+        <div class="month-label" v-text="month"></div>
+        <div class="month-count" v-text="count + ' 篇'"></div>
+      </div>
+    </div>
+  </template>
 </div>
-</ClientOnly>
 
 <style scoped>
 .stats-container {
