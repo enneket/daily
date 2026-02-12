@@ -1,296 +1,120 @@
 # 日历视图
 
 <script setup>
-import { ref, computed } from 'vue';
 import { data as reports } from './.vitepress/reports-index.data';
 
-const currentYear = ref(new Date().getFullYear());
-const currentMonth = ref(new Date().getMonth() + 1);
-
-const reportsByDate = computed(() => {
-  const map = {};
-  if (Array.isArray(reports)) {
-    reports.forEach(report => {
-      map[report.date] = report;
-    });
-  }
-  return map;
-});
-
-const monthDays = computed(() => {
-  const year = currentYear.value;
-  const month = currentMonth.value;
-  const firstDay = new Date(year, month - 1, 1);
-  const lastDay = new Date(year, month, 0);
-  const daysInMonth = lastDay.getDate();
-  const startWeekday = firstDay.getDay();
-  
-  const days = [];
-  
-  // 填充前面的空白
-  for (let i = 0; i < startWeekday; i++) {
-    days.push(null);
-  }
-  
-  // 填充日期
-  for (let day = 1; day <= daysInMonth; day++) {
-    const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    days.push({
-      day,
-      date: dateStr,
-      hasReport: !!reportsByDate.value[dateStr],
-      report: reportsByDate.value[dateStr]
-    });
-  }
-  
-  return days;
-});
-
-const monthName = computed(() => {
-  return `${currentYear.value} 年 ${currentMonth.value} 月`;
-});
-
-function prevMonth() {
-  if (currentMonth.value === 1) {
-    currentMonth.value = 12;
-    currentYear.value--;
-  } else {
-    currentMonth.value--;
-  }
+// 按年月分组
+const reportsByMonth = {};
+if (Array.isArray(reports)) {
+  reports.forEach(report => {
+    const key = `${report.year}-${report.month}`;
+    if (!reportsByMonth[key]) {
+      reportsByMonth[key] = [];
+    }
+    reportsByMonth[key].push(report);
+  });
 }
 
-function nextMonth() {
-  if (currentMonth.value === 12) {
-    currentMonth.value = 1;
-    currentYear.value++;
-  } else {
-    currentMonth.value++;
-  }
-}
-
-function goToToday() {
-  const now = new Date();
-  currentYear.value = now.getFullYear();
-  currentMonth.value = now.getMonth() + 1;
-}
+// 按时间倒序排列月份
+const months = Object.keys(reportsByMonth).sort().reverse();
 </script>
 
-<div class="calendar-container">
-  <div class="calendar-header">
-    <button @click="prevMonth" class="nav-btn">← 上月</button>
-    <h2 class="month-title">{{ monthName }}</h2>
-    <button @click="nextMonth" class="nav-btn">下月 →</button>
-  </div>
-  
-  <button @click="goToToday" class="today-btn">回到今天</button>
-  
-  <div class="calendar">
-    <div class="weekdays">
-      <div class="weekday">日</div>
-      <div class="weekday">一</div>
-      <div class="weekday">二</div>
-      <div class="weekday">三</div>
-      <div class="weekday">四</div>
-      <div class="weekday">五</div>
-      <div class="weekday">六</div>
-    </div>
-    
-    <div class="days">
-      <div
-        v-for="(day, index) in monthDays"
-        :key="index"
-        :class="['day', { 'has-report': day?.hasReport, 'empty': !day }]"
+<div class="calendar-simple">
+  <div v-for="monthKey in months" :key="monthKey" class="month-section">
+    <h2>{{ monthKey.replace('-', ' 年 ') }} 月</h2>
+    <div class="days-grid">
+      <a 
+        v-for="report in reportsByMonth[monthKey]" 
+        :key="report.date"
+        :href="report.path"
+        class="day-card"
       >
-        <template v-if="day">
-          <a v-if="day.hasReport" :href="day.report?.path || '#'" class="day-link">
-            <span class="day-number">{{ day?.day || '' }}</span>
-            <span class="day-indicator">●</span>
-          </a>
-          <span v-else class="day-number">{{ day?.day || '' }}</span>
-        </template>
-      </div>
+        <div class="day-number">{{ report.day }}</div>
+        <div class="day-title">{{ report.title }}</div>
+        <div class="day-meta">{{ report.wordCount }} 字</div>
+      </a>
     </div>
-  </div>
-  
-  <div class="calendar-legend">
-    <span class="legend-item">
-      <span class="legend-dot has-report">●</span>
-      有日报
-    </span>
-    <span class="legend-item">
-      <span class="legend-dot">○</span>
-      无日报
-    </span>
   </div>
 </div>
 
 <style scoped>
-.calendar-container {
-  max-width: 800px;
-  margin: 2rem auto;
+.calendar-simple {
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 2rem;
 }
 
-.calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+.month-section {
+  margin-bottom: 3rem;
 }
 
-.month-title {
-  font-size: 1.5rem;
-  margin: 0;
-}
-
-.nav-btn {
-  padding: 0.5rem 1rem;
-  background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.nav-btn:hover {
-  background: var(--vp-c-brand-soft);
-  border-color: var(--vp-c-brand-1);
+.month-section h2 {
   color: var(--vp-c-brand-1);
+  border-bottom: 2px solid var(--vp-c-divider);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
-.today-btn {
-  display: block;
-  margin: 0 auto 1.5rem;
-  padding: 0.5rem 1.5rem;
-  background: var(--vp-c-brand-1);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
 }
 
-.today-btn:hover {
-  background: var(--vp-c-brand-2);
-  transform: translateY(-1px);
-}
-
-.calendar {
-  background: var(--vp-c-bg-soft);
-  border-radius: 12px;
+.day-card {
   padding: 1.5rem;
-}
-
-.weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.weekday {
-  text-align: center;
-  font-weight: 600;
-  color: var(--vp-c-text-2);
-  padding: 0.5rem;
-}
-
-.days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 0.5rem;
-}
-
-.day {
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: var(--vp-c-bg-soft);
   border-radius: 8px;
-  background: var(--vp-c-bg);
-  position: relative;
-}
-
-.day.empty {
-  background: transparent;
-}
-
-.day.has-report {
-  background: var(--vp-c-brand-soft);
-}
-
-.day-link {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
   text-decoration: none;
   color: inherit;
   transition: all 0.2s;
+  border: 2px solid transparent;
 }
 
-.day.has-report .day-link:hover {
-  background: var(--vp-c-brand-1);
-  color: white;
-  border-radius: 8px;
+.day-card:hover {
+  border-color: var(--vp-c-brand-1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .day-number {
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-
-.day-indicator {
-  font-size: 0.5rem;
+  font-size: 2rem;
+  font-weight: bold;
   color: var(--vp-c-brand-1);
-  margin-top: 0.25rem;
-}
-
-.day.has-report .day-link:hover .day-indicator {
-  color: white;
-}
-
-.calendar-legend {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 1.5rem;
-  font-size: 0.875rem;
-  color: var(--vp-c-text-2);
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.legend-dot {
-  font-size: 1.5rem;
   line-height: 1;
+  margin-bottom: 0.5rem;
 }
 
-.legend-dot.has-report {
-  color: var(--vp-c-brand-1);
+.day-title {
+  font-size: 0.875rem;
+  color: var(--vp-c-text-1);
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.day-meta {
+  font-size: 0.75rem;
+  color: var(--vp-c-text-3);
 }
 
 @media (max-width: 768px) {
-  .calendar-container {
+  .calendar-simple {
     padding: 1rem;
   }
   
-  .calendar {
+  .days-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.75rem;
+  }
+  
+  .day-card {
     padding: 1rem;
   }
   
   .day-number {
-    font-size: 0.9rem;
-  }
-  
-  .day-indicator {
-    font-size: 0.4rem;
+    font-size: 1.5rem;
   }
 }
 </style>
