@@ -1,10 +1,10 @@
 # 我的日报
 
-这是我的个人日报仓库，使用 [日报桌面应用](https://github.com/你的用户名/daily-app) 记录每天的工作和学习。
+这是我的个人日报仓库，使用 [日报桌面应用](https://github.com/enneket/daily-app) 记录每天的工作和学习。
 
 ## 📝 在线查看
 
-访问日报展示网站：**[https://你的用户名.github.io/仓库名/](https://你的用户名.github.io/仓库名/)**
+访问日报展示网站：**[https://enneket.github.io/daily/](https://enneket.github.io/daily/)**
 
 ## ✨ 功能特性
 
@@ -136,3 +136,4 @@ MIT License
 **构建工具**: [日报桌面应用](https://github.com/你的用户名/daily-app)
 
 **当前版本**: v1.2.2
+
