@@ -7,6 +7,7 @@ on:
       - '**.md'
       - '.github/workflows/deploy-site.yml'
       - 'scripts/**'
+      - 'site/**'
   workflow_dispatch:
 
 permissions:
@@ -30,6 +31,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+      
+      - name: 清理缓存
+        run: |
+          rm -rf site/.vitepress/cache
+          rm -rf site/.vitepress/dist
+          rm -f site/.vitepress/reports-index.json
+          rm -f site/.vitepress/stats.json
       
       - name: 安装依赖
         run: npm install
