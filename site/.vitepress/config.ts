@@ -7,6 +7,10 @@ export default defineConfig({
   
   base: '/daily/',  // 根据你的仓库名修改
   
+  head: [
+    ['link', { rel: 'icon', type: 'image/png', href: '/daily/favicon.png' }]
+  ],
+  
   // 启用 Vue 支持
   vue: {
     template: {
