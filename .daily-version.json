@@ -1,8 +1,8 @@
 {
-  "version": "1.2.6",
-  "updatedAt": "2026-02-12T08:23:49.175Z",
+  "version": "1.2.7",
+  "updatedAt": "2026-02-14T05:57:50.826Z",
   "files": {
-    "site/.vitepress/config.ts": "1.2.5",
+    "site/.vitepress/config.ts": "1.2.7",
     "site/.vitepress/reports-index.data.ts": "1.1.0",
     "site/.vitepress/stats.data.ts": "1.1.0",
     "site/.vitepress/reports-index.json": "1.1.0",
@@ -12,6 +12,7 @@
     "site/archive.md": "1.2.0",
     "site/stats.md": "1.2.6",
     "site/latest.md": "1.1.0",
+    "site/public/favicon.png": "1.2.7",
     "scripts/generate-index.js": "1.2.4",
     "scripts/migrate-reports.js": "1.2.3",
     "package.json": "1.1.0",
