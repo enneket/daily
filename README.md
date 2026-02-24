@@ -129,11 +129,3 @@ npm run preview:site
 
 MIT License
 
----
-
-**技术栈**: Electron + React + VitePress + GitHub Actions
-
-**构建工具**: [日报桌面应用](https://github.com/你的用户名/daily-app)
-
-**当前版本**: v1.0.3
-
