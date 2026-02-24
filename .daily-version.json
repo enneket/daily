@@ -1,14 +1,13 @@
 {
-  "version": "1.2.7",
-  "updatedAt": "2026-02-14T05:57:50.826Z",
+  "version": "1.0.3",
+  "updatedAt": "2026-02-24T07:34:12.574Z",
   "files": {
-    "site/.vitepress/config.ts": "1.2.7",
+    "site/.vitepress/config.ts": "1.0.3",
     "site/.vitepress/reports-index.data.ts": "1.1.0",
     "site/.vitepress/stats.data.ts": "1.1.0",
     "site/.vitepress/reports-index.json": "1.1.0",
     "site/.vitepress/stats.json": "1.1.0",
-    "site/index.md": "1.1.0",
-    "site/calendar.md": "1.2.0",
+    "site/index.md": "1.0.3",
     "site/archive.md": "1.2.0",
     "site/stats.md": "1.2.6",
     "site/latest.md": "1.1.0",
