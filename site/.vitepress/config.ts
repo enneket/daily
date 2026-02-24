@@ -21,11 +21,8 @@ export default defineConfig({
   },
   
   themeConfig: {
-    logo: '/logo.svg',
-    
     nav: [
       { text: '首页', link: '/' },
-      { text: '日历', link: '/calendar' },
       { text: '归档', link: '/archive' },
       { text: '统计', link: '/stats' }
     ],
