@@ -1,6 +1,6 @@
 {
-  "version": "1.0.3",
-  "updatedAt": "2026-02-24T07:34:12.574Z",
+  "version": "1.0.4",
+  "updatedAt": "2026-03-31T06:35:49.080Z",
   "files": {
     "site/.vitepress/config.ts": "1.0.3",
     "site/.vitepress/reports-index.data.ts": "1.1.0",
